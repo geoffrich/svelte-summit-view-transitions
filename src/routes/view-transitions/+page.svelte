@@ -1,13 +1,6 @@
 <script lang="ts">
-	import { flip } from 'svelte/animate';
-	import { crossfade } from 'svelte/transition';
-	import { quintOut } from 'svelte/easing';
+	import { tick } from 'svelte';
 	import { createDeck, type Card } from '$lib/cards';
-
-	const [send, receive] = crossfade({
-		duration: 500,
-		easing: quintOut
-	});
 
 	const deck = createDeck().sort(() => Math.random() - 0.5);
 	let cards = deck.slice(0, 5);
@@ -25,31 +18,39 @@
 	function select(card: Card) {
 		selected.push(card);
 		cards.splice(cards.indexOf(card), 1);
-		selected = selected;
-		cards = cards;
+		viewTransition(() => {
+			selected = selected;
+			cards = cards;
+		});
 	}
 
 	function deselect(card: Card) {
 		cards.push(card);
 		selected.splice(selected.indexOf(card), 1);
-		cards = cards;
-		selected = selected;
+		viewTransition(() => {
+			selected = selected;
+			cards = cards;
+		});
+	}
+
+	function viewTransition(cb: () => void) {
+		if (!document.startViewTransition) {
+			cb();
+			return;
+		}
+		document.startViewTransition(() => {
+			cb();
+			return tick();
+		});
 	}
 </script>
 
 <div class="container">
-	<button class="shuffle" on:click={shuffle}>Shuffle</button>
+	<button class="shuffle" on:click={() => viewTransition(shuffle)}>Shuffle</button>
 
 	<div class="cards">
 		{#each cards as card (card)}
-			<div
-				animate:flip={{
-					duration: 400
-				}}
-				class="card"
-				in:send|local={{ key: card }}
-				out:receive|local={{ key: card }}
-			>
+			<div class="card" style:--name="card-{card}">
 				{card}
 				<button class="select" disabled={cards.length === 1} on:click={() => select(card)}
 					>Swap</button
@@ -60,14 +61,7 @@
 
 	<div class="cards">
 		{#each selected as s (s)}
-			<div
-				animate:flip={{
-					duration: 400
-				}}
-				class="card"
-				in:send|local={{ key: s }}
-				out:receive|local={{ key: s }}
-			>
+			<div class="card" style:--name="card-{s}">
 				{s}
 				<button class="select" disabled={selected.length === 1} on:click={() => deselect(s)}
 					>Swap</button
@@ -111,6 +105,7 @@
 		background-color: blue;
 		font-size: 2rem;
 		position: relative;
+		view-transition-name: var(--name);
 	}
 
 	.select:not(:focus) {
