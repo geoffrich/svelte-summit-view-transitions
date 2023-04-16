@@ -2,7 +2,7 @@
 	import { flip } from 'svelte/animate';
 	import { crossfade } from 'svelte/transition';
 	import { quintOut } from 'svelte/easing';
-	import { createDeck, type Card } from '$lib/cards';
+	import { createDeck, type Card, getSpriteUrl } from '$lib/cards';
 
 	const [send, receive] = crossfade({
 		duration: 500,
@@ -47,10 +47,11 @@
 					duration: 400
 				}}
 				class="card"
+				style:background-image="url({getSpriteUrl(card)})"
+				data-card={card}
 				in:send|local={{ key: card }}
 				out:receive|local={{ key: card }}
 			>
-				{card}
 				<button class="select" disabled={cards.length === 1} on:click={() => select(card)}
 					>Swap</button
 				>
@@ -67,8 +68,9 @@
 				class="card"
 				in:send|local={{ key: s }}
 				out:receive|local={{ key: s }}
+				style:background-image="url({getSpriteUrl(s)})"
+				data-card={s}
 			>
-				{s}
 				<button class="select" disabled={selected.length === 1} on:click={() => deselect(s)}
 					>Swap</button
 				>
@@ -76,54 +78,3 @@
 		{/each}
 	</div>
 </div>
-
-<style>
-	.container {
-		display: flex;
-		gap: 1rem;
-		flex-direction: column;
-		margin-top: 3rem;
-	}
-	.shuffle {
-		margin: 0 auto;
-		display: block;
-		max-width: 300px;
-		width: 100%;
-		height: 50px;
-		text-transform: uppercase;
-		background-color: red;
-		border: 5px solid black;
-		color: white;
-		font-size: 1.5rem;
-	}
-	.cards {
-		display: flex;
-		gap: 50px;
-		justify-content: center;
-	}
-
-	.card {
-		max-width: 120px;
-		width: 100%;
-		aspect-ratio: 12 / 20;
-		display: grid;
-		place-items: center;
-		background-color: blue;
-		font-size: 2rem;
-		position: relative;
-	}
-
-	.select:not(:focus) {
-		opacity: 0;
-	}
-
-	.card:hover .select {
-		opacity: 1;
-	}
-
-	.select::after {
-		content: '';
-		position: absolute;
-		inset: 0;
-	}
-</style>

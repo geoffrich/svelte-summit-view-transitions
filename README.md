@@ -2,6 +2,8 @@
 
 Everything you need to build a Svelte project, powered by [`create-svelte`](https://github.com/sveltejs/kit/tree/master/packages/create-svelte).
 
+Images courtesy of https://www.spriters-resource.com/pc_computer/solitaire/sheet/107016/
+
 ## Creating a project
 
 If you're seeing this, you've probably already done this step. Congrats!

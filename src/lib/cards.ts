@@ -1,5 +1,13 @@
+const sprites = import.meta.glob('$lib/sprites/*.png', { eager: true, as: 'url' });
+const spriteUrls = naturalSort(Object.values(sprites));
+
+// take numbers in the string into account
+function naturalSort(items: string[]) {
+	return items.sort((a, b) => a.localeCompare(b, undefined, { numeric: true }));
+}
+
 export function createDeck(): Card[] {
-	const suits = ['♠', '♣', '♥', '♦'];
+	const suits = ['♠', '♥', '♣', '♦'];
 	const deck = suits.flatMap((suit) => {
 		return Array.from({ length: 13 }, (_, i) => {
 			const value = i + 1;
@@ -14,3 +22,13 @@ export function createDeck(): Card[] {
 }
 
 export type Card = string;
+
+const deck = createDeck();
+console.log({ deck });
+
+export function getSpriteUrl(card: Card): string {
+	const cardIndex = deck.indexOf(card);
+	const sprite = spriteUrls[cardIndex];
+
+	return sprite as string;
+}
