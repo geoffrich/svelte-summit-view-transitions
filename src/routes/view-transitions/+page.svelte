@@ -1,35 +1,22 @@
 <script lang="ts">
 	import { tick } from 'svelte';
-	import { createDeck, type Card } from '$lib/cards';
+	import { shuffleDecks, getSpriteUrl, initCards, moveCard, type Card } from '$lib/cards';
 
-	const deck = createDeck().sort(() => Math.random() - 0.5);
-	let cards = deck.slice(0, 5);
-	let selected = deck.slice(5, 10);
+	let { cards, selected } = initCards();
 
 	function shuffle() {
-		const originalCardsLength = cards.length;
-		cards = cards.concat(selected).sort(() => Math.random() - 0.5);
-		// split cards into two arrays
-		selected = cards.splice(originalCardsLength, cards.length - originalCardsLength);
-		cards = cards;
-		selected = selected;
+		[cards, selected] = shuffleDecks(cards, selected);
 	}
 
 	function select(card: Card) {
-		selected.push(card);
-		cards.splice(cards.indexOf(card), 1);
 		viewTransition(() => {
-			selected = selected;
-			cards = cards;
+			[cards, selected] = moveCard(card, cards, selected);
 		});
 	}
 
 	function deselect(card: Card) {
-		cards.push(card);
-		selected.splice(selected.indexOf(card), 1);
 		viewTransition(() => {
-			selected = selected;
-			cards = cards;
+			[selected, cards] = moveCard(card, selected, cards);
 		});
 	}
 
@@ -50,8 +37,12 @@
 
 	<div class="cards">
 		{#each cards as card (card)}
-			<div class="card" style:--name="card-{card}">
-				{card}
+			<div
+				class="card"
+				style:--name="card-{card}"
+				style:background-image="url({getSpriteUrl(card)})"
+				data-card={card}
+			>
 				<button class="select" disabled={cards.length === 1} on:click={() => select(card)}
 					>Swap</button
 				>
@@ -60,10 +51,14 @@
 	</div>
 
 	<div class="cards">
-		{#each selected as s (s)}
-			<div class="card" style:--name="card-{s}">
-				{s}
-				<button class="select" disabled={selected.length === 1} on:click={() => deselect(s)}
+		{#each selected as card (card)}
+			<div
+				class="card"
+				style:--name="card-{card}"
+				style:background-image="url({getSpriteUrl(card)})"
+				data-card={card}
+			>
+				<button class="select" disabled={selected.length === 1} on:click={() => deselect(card)}
 					>Swap</button
 				>
 			</div>

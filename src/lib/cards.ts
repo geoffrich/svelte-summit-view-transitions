@@ -32,3 +32,24 @@ export function getSpriteUrl(card: Card): string {
 
 	return sprite as string;
 }
+
+export function initCards() {
+	const deck = createDeck().sort(() => Math.random() - 0.5);
+	let cards = deck.slice(0, 5);
+	let selected = deck.slice(5, 10);
+	return { cards, selected };
+}
+
+export function shuffleDecks(deck1: Card[], deck2: Card[]) {
+	const originalCardsLength = deck1.length;
+	deck1 = deck1.concat(deck2).sort(() => Math.random() - 0.5);
+	// split cards into two arrays
+	deck2 = deck1.splice(originalCardsLength, deck1.length - originalCardsLength);
+	return [deck1, deck2];
+}
+
+export function moveCard(card: Card, originDeck: Card[], targetDeck: Card[]) {
+	targetDeck.push(card);
+	originDeck.splice(originDeck.indexOf(card), 1);
+	return [originDeck, targetDeck];
+}

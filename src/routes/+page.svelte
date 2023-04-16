@@ -2,38 +2,25 @@
 	import { flip } from 'svelte/animate';
 	import { crossfade } from 'svelte/transition';
 	import { quintOut } from 'svelte/easing';
-	import { createDeck, type Card, getSpriteUrl } from '$lib/cards';
+	import { shuffleDecks, getSpriteUrl, initCards, moveCard, type Card } from '$lib/cards';
 
 	const [send, receive] = crossfade({
 		duration: 500,
 		easing: quintOut
 	});
 
-	const deck = createDeck().sort(() => Math.random() - 0.5);
-	let cards = deck.slice(0, 5);
-	let selected = deck.slice(5, 10);
+	let { cards, selected } = initCards();
 
 	function shuffle() {
-		const originalCardsLength = cards.length;
-		cards = cards.concat(selected).sort(() => Math.random() - 0.5);
-		// split cards into two arrays
-		selected = cards.splice(originalCardsLength, cards.length - originalCardsLength);
-		cards = cards;
-		selected = selected;
+		[cards, selected] = shuffleDecks(cards, selected);
 	}
 
 	function select(card: Card) {
-		selected.push(card);
-		cards.splice(cards.indexOf(card), 1);
-		selected = selected;
-		cards = cards;
+		[cards, selected] = moveCard(card, cards, selected);
 	}
 
 	function deselect(card: Card) {
-		cards.push(card);
-		selected.splice(selected.indexOf(card), 1);
-		cards = cards;
-		selected = selected;
+		[selected, cards] = moveCard(card, selected, cards);
 	}
 </script>
 
@@ -60,18 +47,18 @@
 	</div>
 
 	<div class="cards">
-		{#each selected as s (s)}
+		{#each selected as card (card)}
 			<div
 				animate:flip={{
 					duration: 400
 				}}
 				class="card"
-				in:send|local={{ key: s }}
-				out:receive|local={{ key: s }}
-				style:background-image="url({getSpriteUrl(s)})"
-				data-card={s}
+				in:send|local={{ key: card }}
+				out:receive|local={{ key: card }}
+				style:background-image="url({getSpriteUrl(card)})"
+				data-card={card}
 			>
-				<button class="select" disabled={selected.length === 1} on:click={() => deselect(s)}
+				<button class="select" disabled={selected.length === 1} on:click={() => deselect(card)}
 					>Swap</button
 				>
 			</div>
