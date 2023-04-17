@@ -1,6 +1,8 @@
 lockfileVersion: 5.4
 
 specifiers:
+  98.css: 0.1.20
+  '@neodrag/svelte': ^2.0.3
   '@sveltejs/adapter-auto': ^2.0.0
   '@sveltejs/kit': ^1.5.0
   prettier: ^2.8.0
@@ -11,7 +13,11 @@ specifiers:
   typescript: ^5.0.0
   vite: ^4.2.0
 
+dependencies:
+  98.css: 0.1.20
+
 devDependencies:
+  '@neodrag/svelte': 2.0.3
   '@sveltejs/adapter-auto': 2.0.0_@sveltejs+kit@1.15.4
   '@sveltejs/kit': 1.15.4_svelte@3.58.0+vite@4.2.1
   prettier: 2.8.7
@@ -23,6 +29,10 @@ devDependencies:
   vite: 4.2.1
 
 packages:
+
+  /98.css/0.1.20:
+    resolution: {integrity: sha512-9oM+AZMfxG59Zz+bnAjIxAX2AKnBPkEJjf84ATto0wUNdRPxV+jhov1rHKe/wl6D0giuWwY603RxwrVVG4v2sA==}
+    dev: false
 
   /@esbuild/android-arm/0.17.16:
     resolution: {integrity: sha512-baLqRpLe4JnKrUXLJChoTN0iXZH7El/mu58GE3WIA6/H834k0XWvLRmGLG8y8arTRS9hJJibPnF0tiGhmWeZgw==}
@@ -240,6 +250,10 @@ packages:
     dependencies:
       '@jridgewell/resolve-uri': 3.1.0
       '@jridgewell/sourcemap-codec': 1.4.14
+    dev: true
+
+  /@neodrag/svelte/2.0.3:
+    resolution: {integrity: sha512-/7k4Byv6guBs6NpfzOnqOep8PM3HjhPg1rRPNsJsGNGDXSJNB+tn9NAi/vTXJBos3vN9XPlbnr3g/lNKGfg+Jg==}
     dev: true
 
   /@nodelib/fs.scandir/2.1.5:
