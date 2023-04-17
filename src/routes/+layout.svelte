@@ -7,7 +7,7 @@
 
 <div class="container window" use:draggable>
 	<div class="title-bar">
-		<div class="title-bar-text">Solitaire (not really)</div>
+		<div class="title-bar-text">Svelte Summit Card Demo</div>
 	</div>
 
 	<ul class="menu">
@@ -77,8 +77,17 @@
 		color: #222;
 		margin: 6px;
 		text-decoration: none;
+		font-size: 16px;
 	}
 	.menu a:focus {
 		outline: 1px dotted #222;
+	}
+
+	.title-bar-text {
+		font-size: 16px;
+	}
+
+	p {
+		font-size: 14px;
 	}
 </style>
