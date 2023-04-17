@@ -24,7 +24,6 @@ export function createDeck(): Card[] {
 export type Card = string;
 
 const deck = createDeck();
-console.log({ deck });
 
 export function getSpriteUrl(card: Card): string {
 	const cardIndex = deck.indexOf(card);

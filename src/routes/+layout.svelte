@@ -7,7 +7,7 @@
 
 <div class="container window" use:draggable>
 	<div class="title-bar">
-		<div class="title-bar-text">Solitaire</div>
+		<div class="title-bar-text">Solitaire (not really)</div>
 	</div>
 
 	<ul class="menu">
