@@ -33,10 +33,12 @@ export function getSpriteUrl(card: Card): string {
 	return sprite as string;
 }
 
+const DECK_SIZE = 3;
+
 export function initCards() {
 	const deck = createDeck().sort(() => Math.random() - 0.5);
-	let cards = deck.slice(0, 5);
-	let selected = deck.slice(5, 10);
+	let cards = deck.slice(0, DECK_SIZE);
+	let selected = deck.slice(DECK_SIZE, DECK_SIZE * 2);
 	return { cards, selected };
 }
 
