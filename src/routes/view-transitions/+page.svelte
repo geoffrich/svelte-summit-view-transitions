@@ -42,10 +42,10 @@
 			style:background-image="url({getSpriteUrl(card)})"
 			data-card={card}
 		>
-			<button class="select" disabled={cards.length === 1} on:click={() => select(card)}
-				>Swap</button
-			>
+			<button class="select" on:click={() => select(card)}>Swap</button>
 		</div>
+	{:else}
+		<div class="card" />
 	{/each}
 </div>
 
@@ -57,10 +57,10 @@
 			style:background-image="url({getSpriteUrl(card)})"
 			data-card={card}
 		>
-			<button class="select" disabled={selected.length === 1} on:click={() => deselect(card)}
-				>Swap</button
-			>
+			<button class="select" on:click={() => deselect(card)}>Swap</button>
 		</div>
+	{:else}
+		<div class="card" />
 	{/each}
 </div>
 
